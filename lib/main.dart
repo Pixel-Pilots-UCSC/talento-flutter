@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:talento/layout/main_layout.dart';
 import 'package:talento/themes/theme_data.dart';
+import 'package:talento/views/employee/dashboard_view.dart';
 import 'package:talento/views/login_page.dart';
 
 void main() {
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: Themes.lightTheme,
       darkTheme: Themes.darkTheme,
       routes: {
-        '/': (context) => LoginPage(),
+        '/': (context) => DashboardView(),
         '/job-applicant' : (context) => MainLayout(),
         // '/job-employer' : (context) => checkAuthentication(),
       },

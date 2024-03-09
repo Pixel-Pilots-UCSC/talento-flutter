@@ -18,8 +18,8 @@ class Themes {
       onError: Colors.white, // Text color on error
     ),
     appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.blue,
-      foregroundColor: Colors.white,
+      backgroundColor: Colors.white,
+      foregroundColor: Colors.black
     ),
     inputDecorationTheme: InputDecorationTheme(
       //no border
