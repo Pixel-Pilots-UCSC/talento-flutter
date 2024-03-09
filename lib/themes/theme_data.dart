@@ -23,8 +23,11 @@ class Themes {
     ),
     inputDecorationTheme: InputDecorationTheme(
       //no border
-      border: const OutlineInputBorder(
-        borderSide: BorderSide.none,
+      enabledBorder: const OutlineInputBorder(
+        borderSide: BorderSide(
+          width: 10,
+          color: Color(0xFF3EB489),
+        ),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       filled: true,
@@ -59,6 +62,7 @@ class Themes {
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
+
           ),
         ),
         padding: MaterialStateProperty.all(
@@ -180,6 +184,15 @@ class Themes {
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(4),
+      ),
+    ),
+    cardColor: Colors.black,
+
+    cardTheme: const CardTheme(
+      color: Colors.black,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
     ),
   );
