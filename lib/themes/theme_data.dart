@@ -9,7 +9,7 @@ class Themes {
       primary: Colors.blue, // A blue color for primary elements
       secondary: Colors.teal, // A teal color for secondary elements
       background: Colors.white, // A white background
-      surface: Colors.grey[200]!, // A slightly lighter surface color
+      surface: Color(0xFF61677D), // A slightly lighter surface color
       error: Colors.red, // A red accent color for errors
       onPrimary: Colors.blue, // Text color on primary elements
       onSecondary: Colors.white, // Text color on secondary elements
@@ -28,7 +28,7 @@ class Themes {
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       filled: true,
-      fillColor: Colors.grey[200]!,
+      fillColor: Color(0XFFF5F9FE),
       labelStyle: const TextStyle(
         color: Colors.black,
       ),
@@ -38,13 +38,36 @@ class Themes {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Colors.white),
+        backgroundColor: MaterialStateProperty.all(Color(0xFF3EB489)),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        foregroundColor: MaterialStateProperty.all(Colors.black),
+        padding: MaterialStateProperty.all(
+          const EdgeInsets.symmetric(
+            vertical: 5,
+            horizontal: 20,
+          ),
+        ),
+        foregroundColor: MaterialStateProperty.all(Colors.white),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Colors.transparent),
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        padding: MaterialStateProperty.all(
+          const EdgeInsets.symmetric(
+            vertical: 5,
+            horizontal: 20,
+          ),
+        ),
+        foregroundColor: MaterialStateProperty.all(Color(0xFF7C8BA0)),
       ),
     ),
     checkboxTheme: CheckboxThemeData(
@@ -103,21 +126,54 @@ class Themes {
       hintStyle: TextStyle(
         color: Colors.grey,
       ),
+      iconColor: Colors.white,
+      suffixIconColor: Colors.white,
     ),
+
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Colors.white),
+        backgroundColor: MaterialStateProperty.all(Color(0xFF3EB489)),
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(
+              color: Color(0xFF303C4E),
+            ),
+          ),
+        ),
+        foregroundColor: MaterialStateProperty.all(Colors.white),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Colors.transparent),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        foregroundColor: MaterialStateProperty.all(Colors.black),
+        padding: MaterialStateProperty.all(
+          const EdgeInsets.symmetric(
+            vertical: 5,
+            horizontal: 20,
+          ),
+        ),
+        foregroundColor: MaterialStateProperty.all(Color(0xFF7C8BA0)),
+      ),
+    ),
+    iconButtonTheme: IconButtonThemeData(
+      style: ButtonStyle(
+        foregroundColor: MaterialStateProperty.all(
+          Colors.white
+        ),
+        iconColor: MaterialStateProperty.all(
+          Colors.white
+        ),
       ),
     ),
     checkboxTheme: CheckboxThemeData(
-      fillColor: MaterialStateProperty.all(Colors.white),
-      checkColor: MaterialStateProperty.all(Colors.black),
+      fillColor: MaterialStateProperty.all(Color(0XFF404040)),
+      checkColor: MaterialStateProperty.all(Colors.white),
       side: const BorderSide(
         color: Colors.white10,
         width: 1,

@@ -26,6 +26,8 @@ class MyApp extends StatelessWidget {
       darkTheme: Themes.darkTheme,
       routes: {
         '/': (context) => LoginPage(),
+        '/job-applicant' : (context) => MainLayout(),
+        // '/job-employer' : (context) => checkAuthentication(),
       },
       initialRoute: '/',
     );
