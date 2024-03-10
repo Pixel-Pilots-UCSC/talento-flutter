@@ -47,7 +47,9 @@ class FormField extends StatelessWidget {
               
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: TextField(
+                
                 decoration: InputDecoration(
+                  
                   border: InputBorder.none,
                   hoverColor: Colors.grey,
                   hintText: hintText,

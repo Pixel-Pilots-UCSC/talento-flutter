@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:talento/utils/custom_icons.dart';
 import 'package:talento/views/aboutme.dart';
+import 'package:talento/views/education.dart';
+import 'package:talento/views/qualification.dart';
+import 'package:talento/views/work.dart';
 
 import 'package:talento/widgets/profile_list.dart';
 
@@ -124,7 +127,10 @@ class ProfilePage extends StatelessWidget {
                       iconColor: Colors.green,
                       icon: Icons.shopping_bag_outlined,
                       onTap: () {
-                        // do something
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (_) {
+                          return WorkEx();
+                        }));
                       },
                     ),
                     const SizedBox(height: 20),
@@ -134,7 +140,10 @@ class ProfilePage extends StatelessWidget {
                       iconColor: Colors.green,
                       icon: Icons.school_outlined,
                       onTap: () {
-                        // do something
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (_) {
+                          return Education();
+                        }));
                       },
                     ),
                     const SizedBox(height: 20),
@@ -154,7 +163,10 @@ class ProfilePage extends StatelessWidget {
                       iconColor: Colors.green,
                       icon: Icons.verified_user_outlined,
                       onTap: () {
-                        // do something
+                       Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (_) {
+                          return Qualification();
+                        }));
                       },
                     ),
                   ],
