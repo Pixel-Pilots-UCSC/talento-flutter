@@ -1,5 +1,6 @@
 
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class JobTiles extends StatelessWidget {
@@ -26,72 +27,81 @@ class JobTiles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Image.network(
-        imageUrl,
-        width: 50,
-        height: 50,
-        fit: BoxFit.cover,
-      ),
-      title: Text(
-        title,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: ListTile(
+        leading: Image.network(
+          imageUrl,
+          width: 50,
+          height: 50,
+          fit: BoxFit.cover,
         ),
-      ),
-      subtitle: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                "$company - $location",
-                style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontSize: 12
-                ),
-              ),
-            ],
+        title: Text(
+          title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
           ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                decoration: BoxDecoration(
-                  color: color,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Text(
-                  jobType,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "$company - $location",
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 12
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text(
+                    jobType,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(width: 5),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                decoration: BoxDecoration(
-                  color: color,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Text(
-                  location,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
+                SizedBox(width: 5),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text(
+                    location,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
+        trailing: const Icon(Icons.more_vert),
       ),
-      trailing: const Icon(Icons.more_vert),
     );
   }
 }

@@ -3,16 +3,33 @@ import 'package:flutter/widgets.dart';
 import 'dart:math' as math;
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:talento/bloc/boolean_bloc.dart';
+import 'package:talento/bloc/job_bloc.dart';
 import 'package:talento/bloc/map_bloc.dart';
+import 'package:talento/bloc/ranger_bloc.dart';
+import 'package:talento/bloc/string_bloc.dart';
 import 'package:talento/models/response.dart';
+import 'package:talento/widgets/app_drawer.dart';
 
+import '../../bloc/list_bloc.dart';
 import '../../models/job_model.dart';
+import '../../widgets/app_bar.dart';
 import '../../widgets/job_card.dart';
 import '../../widgets/job_tiles.dart';
+import 'filter_view.dart';
 
 class DashboardView extends StatelessWidget {
   DashboardView({super.key});
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  StringBloc industryBloc = StringBloc();
+  StringBloc categoryBloc = StringBloc();
+  StringBloc locationBloc = StringBloc();
+  ListBloc<String> jobTagsBloc = ListBloc<String>();
+  RangerBloc salaryBloc = RangerBloc();
+  JobBloc jobBloc = JobBloc();
+  JobBloc newJobBloc = JobBloc();
+  BooleanBloc searchStartedBloc = BooleanBloc();
+  TextEditingController searchController = TextEditingController();
 
   List<Color> lightColors = [
     Color(0xFFADD8E6),
@@ -28,14 +45,14 @@ class DashboardView extends StatelessWidget {
   ];
 
   List<Color> darkColors = [
-    Color(0xFF000080),
+    Color(0xFF040459),
     Color(0xFF006400),
     Color(0xFF800000),
-    Color(0xFF4B0082),
-    Color(0xFF00008B),
-    Color(0xFFD2691E),
+    Color(0xFF380060),
+    Color(0xFF37003D),
+    Color(0xFF642A01),
     Color(0xFF36454F),
-    Color(0xFF228B22),
+    Color(0xFF015601),
     Color(0xFF8B0000),
     Color(0xFF000000),
   ];
@@ -60,330 +77,307 @@ class DashboardView extends StatelessWidget {
   };
 
 
-  List<Job> jobList = [
-    Job(
-      title: 'Software Engineer',
-      company: 'Google',
-      location: 'Remote',
-      salary: '100,000',
-      imageUrl:
-          'https://www.shutterstock.com/image-vector/luxury-building-construction-company-logo-260nw-1383756005.jpg',
-      jobType: 'Full Time',
-    ),
-    Job(
-      title: 'Software Engineer',
-      company: 'Google',
-      location: 'Remote',
-      salary: '100,000',
-      imageUrl:
-          'https://miro.medium.com/v2/resize:fit:860/1*ByoJvUAuB0L00yk1UhkEiw.png',
-      jobType: 'Full Time',
-    ),
-    Job(
-      title: 'Software Engineer',
-      company: 'Google',
-      location: 'Remote',
-      salary: '100,000',
-      imageUrl:
-          'https://www.shutterstock.com/image-vector/luxury-building-construction-company-logo-260nw-1383756005.jpg',
-      jobType: 'Full Time',
-    ),
-    Job(
-      title: 'Software Engineer',
-      company: 'Google',
-      location: 'Remote',
-      salary: '100,000',
-      imageUrl:
-          'https://www.shutterstock.com/image-vector/luxury-building-construction-company-logo-260nw-1383756005.jpg',
-      jobType: 'Full Time',
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       key: _scaffoldKey,
-      drawerEnableOpenDragGesture: false,
-      appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              _scaffoldKey.currentState?.openDrawer();
-            },
-            icon: const Icon(Icons.menu),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.notifications),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.settings),
-            ),
-          ],
-          shadowColor: Colors.black54,
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(0.5),
-            child: Container(
-              height: 0.1,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0xFF303C4E),
-                    spreadRadius: 0.2,
-                    blurRadius: 0.2,
-                    offset: Offset(0, 1),
-                  ),
-                ],
-                color: Color(0xFF303C4E),
-              )
-            ),
-          )
-      ),
-      body: Container(
-          child: Column(
-        children: [
-          //search bar with search filter icon
-          Container(
-            height: 40,
-            margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+      resizeToAvoidBottomInset: false,
+      appBar: CustomAppBar(scaffoldKey: _scaffoldKey),
+      drawer: AppDrawer(scaffoldKey: _scaffoldKey,selectedIndex: 0,),
+      body: SafeArea(
+        child: StreamBuilder<bool>(
+          stream: searchStartedBloc.state,
+          initialData: true,
+          builder: (context, searchStartedSnapshot) {
+            bool _searchStarted = searchStartedSnapshot.data!;
+            return Container(
+                child: Column(
               children: [
-                Expanded(
-                  child: Container(
-                    height: 40,
-                    padding: const EdgeInsets.only(left: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: TextField(
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        hintText: 'Search',
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Colors.black,
-                        ),
-                        contentPadding: const EdgeInsets.all(0),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            width: 1,
-                            color: Color(0xFF3EB489),
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            width: 2,
-                            color: Color(0xFF3EB489),
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        filled: true,
-
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 5,
-                ),
+                //search bar with search filter icon
                 Container(
                   height: 40,
-                  width: 40,
-                  margin: const EdgeInsets.only(left: 10),
-                  padding: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: Color(0xFF3EB489),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      FeatherIcons.sliders,
-                      color: Colors.white,
-                      size: 20,
-                    ),
+                  margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 50,
+                          padding: const EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: TextField(
+                            controller: searchController,
+                            decoration: InputDecoration(
+                              hintText: 'Search',
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: Theme.of(context).colorScheme.onBackground,
+                              ),
+                              contentPadding: const EdgeInsets.all(0),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: Color(0xFF3EB489),
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 2,
+                                  color: Color(0xFF3EB489),
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              filled: true,
+                              suffix: GestureDetector(
+                                onTap: () {
+                                  searchController.clear();
+                                  jobBloc.getJobs();
+                                  searchStartedBloc.emit(false);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(2),
+                                  margin: const EdgeInsets.only(right: 10),
+                                  child: Icon(
+                                    FeatherIcons.x,
+                                    size: 16,
+                                    color: Theme.of(context).colorScheme.onBackground,
+                                  ),
+                                ),
+                              ),
+
+                            ),
+                            keyboardType: TextInputType.text,
+                            onSubmitted: (value) {
+                              jobBloc.searchJobs(value);
+                              searchStartedBloc.emit(true);
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Container(
+                        height: 40,
+                        width: 40,
+                        margin: const EdgeInsets.only(left: 10),
+                        padding: const EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF3EB489),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FilterView(
+                                      industryBloc: industryBloc,
+                                      categoryBloc: categoryBloc,
+                                      locationBloc: locationBloc,
+                                      jobTagsBloc: jobTagsBloc,
+                                      salaryBloc: salaryBloc,
+                                    )
+                                )
+                            );
+                          },
+                          icon: const Icon(
+                            FeatherIcons.sliders,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-          Container(
-            height: 300,
-            decoration: BoxDecoration(),
-            alignment: Alignment.center,
-            margin: const EdgeInsets.only(top: 10),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: jobList.length,
-              addAutomaticKeepAlives: true,
-              addRepaintBoundaries: false,
-              itemBuilder: (context, index) {
-                Job job = jobList[index];
-                return JobCard(
-                    title: job.title,
-                    company: job.company,
-                    location: job.location,
-                    salary: job.salary,
-                    imageUrl: job.imageUrl,
-                    bookmarked: job.bookmarked,
-                    jobType: job.jobType,
-                    color: getColor(context,index)
-                );
-              },
-            ),
-          ),
-          //List of Filters as Chips
-          StreamBuilder<Map<String,bool>>(
-            stream: mapBloc.state,
-            initialData: filterList,
-            builder: (context, snapshot) {
-                return Skeletonizer(
-                  enabled: snapshot.connectionState == ConnectionState.done,
-                  child: Container(
-                    height: 40,
-                    margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: snapshot.data!.keys.length,
-                      itemBuilder: (context, index) {
-                        String filterName = snapshot.data!.keys.toList()[index];
-                        bool isSelected = snapshot.data!.values.toList()[index];
-                        return GestureDetector(
-                          onTap: (){
-                            mapBloc.setValue(snapshot.data!,filterName,!isSelected);
+                if(!_searchStarted)
+                Container(
+                  height: 300,
+                  decoration: BoxDecoration(),
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(top: 10),
+                  child: StreamBuilder<Response<Job>>(
+                    stream: newJobBloc.state,
+                    builder: (context, jobSnapshot) {
+                      if(jobSnapshot.hasData && jobSnapshot.data!.status == Status.COMPLETED){
+                        return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: jobSnapshot.data!.data!.data!.length,
+                          addAutomaticKeepAlives: true,
+                          addRepaintBoundaries: false,
+                          itemBuilder: (context, index) {
+                            Data job = jobSnapshot.data!.data!.data![index];
+                            String salary = double.parse((job.salaryRange!.low! + job.salaryRange!.high! / 2).toString()).toStringAsFixed(0);
+                            return JobCard(
+                                title: job.title ?? 'No Title',
+                                company: job.company!.name ?? 'No Company',
+                                location: job.location ?? 'No Location',
+                                salary: salary,
+                                imageUrl: job.company!.logo ?? "https://miro.medium.com/v2/resize:fit:800/1*eYPD6Nie7QROiA6n0uPSTQ.png",
+                                bookmarked: false,
+                                jobType: job.jobType ?? "None",
+                                color: getColor(context,index)
+                            );
                           },
-                          child: Container(
-                            alignment: Alignment.center,
-                            height: 30,
-                            margin: const EdgeInsets.only(right: 5),
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            decoration: BoxDecoration(
-                              color: isSelected ? Color(0xFF3EB489) : Colors.grey,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                if(isSelected)
-                                  Icon(
-                                    FeatherIcons.check,
-                                    color: Colors.white,
-                                    size: 15,
-                                  ),
-                                SizedBox(
-                                  width: 5,
+                        );
+                      }
+                      return Skeletonizer(
+                        enabled: true,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 10,
+                          addAutomaticKeepAlives: true,
+                          addRepaintBoundaries: false,
+                          itemBuilder: (context, index) {
+                            return JobCard(
+                                title: 'No Title',
+                                company: 'No Location',
+                                location: 'No Location',
+                                salary: '10,000',
+                                imageUrl: "https://miro.medium.com/v2/resize:fit:800/1*eYPD6Nie7QROiA6n0uPSTQ.png",
+                                bookmarked: false,
+                                jobType: "Remote",
+                                color: getColor(context,index)
+                            );
+                          },
+                        ),
+                      );
+                    }
+                  ),
+                ),
+
+                //List of Filters as Chips
+                StreamBuilder<Map<String,bool>>(
+                  stream: mapBloc.state,
+                  initialData: filterList,
+                  builder: (context, snapshot) {
+                      return Skeletonizer(
+                        enabled: snapshot.connectionState == ConnectionState.done,
+                        child: Container(
+                          height: 40,
+                          margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snapshot.data!.keys.length,
+                              separatorBuilder: (context, index) => SizedBox(
+                                width: 10,
+                              ),
+                            itemBuilder: (context, index) {
+                              String filterName = snapshot.data!.keys.toList()[index];
+                              bool isSelected = snapshot.data!.values.toList()[index];
+                              return FilterChip(
+                                label: Text(
+                                  filterName
                                 ),
-                                Text(
-                                  filterName,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                  
-                              ],
-                            ),
+                                selected: isSelected,
+                                elevation: 1,
+                                padding: const EdgeInsets.all(5),
+                                onSelected: (bool value) {
+                                  jobBloc.filterJobs(snapshot.data!,filterName,!isSelected);
+                                  mapBloc.setValue(snapshot.data!,filterName,!isSelected);
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      );
+
+                  }
+                ),
+                //Recommended For You
+                if(!_searchStarted)
+                Container(
+                  margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Recommended For You',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text(
+                          'View All',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // set of tiles for recommended jobs
+                Container(
+                  height: _searchStarted?MediaQuery.of(context).size.height - 250: MediaQuery.of(context).size.height -600,
+                  decoration: BoxDecoration(),
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(top: 10),
+                  child: StreamBuilder<Response<Job>>(
+                      stream: jobBloc.state,
+                      builder: (context, jobSnapshot) {
+                        if(jobSnapshot.hasData && jobSnapshot.data !=null && jobSnapshot.data!.status == Status.COMPLETED){
+                          return ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            itemCount: jobSnapshot.data!.data!.data!.length,
+                            addAutomaticKeepAlives: true,
+                            addRepaintBoundaries: false,
+                            itemBuilder: (context, index) {
+                              Data job = jobSnapshot.data!.data!.data![index];
+                              String salary = double.parse((job.salaryRange!.low! + job.salaryRange!.high! / 2).toString()).toStringAsFixed(0);
+                              return JobTiles(
+                                  title: job.title ?? 'No Title',
+                                  company: job.company!.name ?? 'No Company',
+                                  location: job.location ?? 'No Location',
+                                  salary: salary,
+                                  imageUrl: job.company!.logo ?? "https://miro.medium.com/v2/resize:fit:800/1*eYPD6Nie7QROiA6n0uPSTQ.png",
+                                  bookmarked: false,
+                                  jobType: job.jobType ?? "None",
+                                  color: Theme.of(context).colorScheme.background == Colors.black ? Color(0xFF36454F) : Color(
+                                      0xFFB2FFE2)
+                              );
+                            },
+                          );
+                        }
+                        return Skeletonizer(
+                          enabled: true,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 10,
+                            itemBuilder: (context, index) {
+                              return JobTiles(
+                                  title: 'No Title',
+                                  company: 'No Location',
+                                  location: 'No Location',
+                                  salary: '10,000',
+                                  imageUrl: "https://miro.medium.com/v2/resize:fit:800/1*eYPD6Nie7QROiA6n0uPSTQ.png",
+                                  bookmarked: false,
+                                  jobType: "Remote",
+                                  color: Theme.of(context).colorScheme.background == Colors.black ? Color(0xFF36454F) : Color(
+                                  0xFFB2FFE2)
+                              );
+                            },
                           ),
                         );
-                      },
-                    ),
-                  ),
-                );
-
-            }
-          ),
-          //Recommended For You
-          Container(
-            margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Recommended For You',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    'View All',
-                    style: TextStyle(
-                      color: Color(0xFF3EB489),
-                      fontSize: 14,
-                    ),
-                  ),
+                      }
+                  )
                 ),
               ],
-            ),
-          ),
-          //set of tiles for recommended jobs
-          Container(
-            height: MediaQuery.of(context).size.height -600,
-            decoration: BoxDecoration(),
-            alignment: Alignment.center,
-            margin: const EdgeInsets.only(top: 10),
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: jobList.length,
-              itemBuilder: (context, index) {
-                Job job = jobList[index];
-                return JobTiles(
-                    title: job.title,
-                    company: job.company,
-                    location: job.location,
-                    salary: job.salary,
-                    imageUrl: job.imageUrl,
-                    bookmarked: job.bookmarked,
-                    jobType: job.jobType,
-                    color: getColor(context,index)
-                );
-              },
-            ),
-          ),
-        ],
-      )),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Color(0xFF3EB489),
-              ),
-              child: Text(
-                'Drawer Header',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text('Item 1'),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text('Item 2'),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.pop(context);
-              },
-            ),
-          ],
+            ));
+          }
         ),
       ),
+
     );
   }
 }

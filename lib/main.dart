@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:talento/layout/main_layout.dart';
 import 'package:talento/themes/theme_data.dart';
 import 'package:talento/views/employee/dashboard_view.dart';
@@ -26,9 +27,10 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: Themes.lightTheme,
       darkTheme: Themes.darkTheme,
+      builder: EasyLoading.init(),
       routes: {
-        '/': (context) => FilterView(),
-        '/job-applicant' : (context) => MainLayout(),
+        '/': (context) => LoginPage(),
+        '/job-applicant' : (context) => DashboardView(),
         // '/job-employer' : (context) => checkAuthentication(),
       },
       initialRoute: '/',

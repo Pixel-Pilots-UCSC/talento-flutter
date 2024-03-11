@@ -1,6 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class JobCard extends StatelessWidget {
   String title;
@@ -56,6 +58,21 @@ class JobCard extends StatelessWidget {
                       width: 200,
                       height: 150,
                       fit: BoxFit.cover,
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        }
+                        return Center(
+                          child: Skeletonizer(
+                            enabled: loadingProgress.expectedTotalBytes == null,
+                            child: Container(
+                              width: 200,
+                              height: 150,
+                            ),
+                          ),
+                        );
+                      }
                     ),
                   ),
                 ),
@@ -63,11 +80,12 @@ class JobCard extends StatelessWidget {
                   top: 5,
                   right: 5,
                   child: Container(
-                    width: 20,
-                    height: 20,
-                    padding: const EdgeInsets.all(2),
+                    width: 30,
+                    height: 30,
+                    padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
+                      color: Theme.of(context).colorScheme.background.withOpacity(0.7),
                     ),
                     child: bookmarked
                         ? const Icon(
@@ -86,6 +104,7 @@ class JobCard extends StatelessWidget {
             ),
             Container(
               padding: const EdgeInsets.all(20),
+              height: 146,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(10),
@@ -94,32 +113,46 @@ class JobCard extends StatelessWidget {
                 color: color,
               ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      //invert the color of the text to make it readable by inverting the color of the container
-                      color:Theme.of(context).colorScheme.background == Colors.black ?
-                      Colors.white70 : Colors.black87
-
+                  Container(
+                    height: 70,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AutoSizeText(
+                          title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            //invert the color of the text to make it readable by inverting the color of the container
+                            color:Theme.of(context).colorScheme.background == Colors.black ?
+                            Colors.white70 : Colors.black87
+                        
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 2,
+                        ),
+                        AutoSizeText(
+                          '$company - $location',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Theme.of(context).colorScheme.background == Colors.black ?
+                            Colors.white70 : Colors.black87
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    '$company - $location',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.background == Colors.black ?
-                      Colors.white70 : Colors.black87
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
