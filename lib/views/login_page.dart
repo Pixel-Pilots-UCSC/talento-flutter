@@ -1,20 +1,28 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:talento/bloc/boolean_bloc.dart';
+import 'package:talento/util/loader_util.dart';
+import 'package:talento/util/toast_util.dart';
 
 import '../bloc/login_bloc.dart';
+import '../models/response.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController(text: "kip.rutherford@gmail.com");
+  final TextEditingController passwordController = TextEditingController(text: "1234");
   final BooleanBloc _rememberMe = BooleanBloc();
   final BooleanBloc _passwordVisible = BooleanBloc();
   final LoginBloc _loginBloc = LoginBloc();
+  bool _initialized = false;
 
-  _loginUser() {
+  _loginUser() async{
     _loginBloc.login(emailController.text, passwordController.text);
   }
 
@@ -23,6 +31,23 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     _rememberMe.set(false);
     _passwordVisible.set(false);
+    if(!_initialized){
+      _loginBloc.state.listen((event) {
+        if(event.status == Status.COMPLETED){
+          ToastUtil().showSuccessToast(context, 'Success', 'Login Successful');
+          Navigator.pushNamed(context, '/job-applicant');
+          LoaderUtil.hideLoader();
+        }else if(event.status == Status.ERROR){
+          Future.delayed(Duration(seconds: 5), () => {
+          ToastUtil().showErrorToast(context, 'Error', event.message),
+            LoaderUtil.hideLoader()
+          });
+        }else if(event.status == Status.LOADING){
+          LoaderUtil.showLoader(context, message: 'Trying to Access..');
+        }
+      });
+      _initialized = true;
+    }
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -149,7 +174,7 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(height: 16),
                 StreamBuilder<bool>(
                   stream: _passwordVisible.state,
-                  initialData:false,
+                  initialData: false,
                   builder: (context, snapshot) {
                     return TextField(
                       controller: passwordController,
@@ -158,7 +183,9 @@ class LoginPage extends StatelessWidget {
                         hintText: 'Password',
                         suffixIcon: IconButton(
                           icon: Icon(snapshot.data! ? Icons.visibility : Icons.visibility_off),
-                          onPressed: _passwordVisible.toggle,
+                          onPressed: (){
+                            _passwordVisible.set(!snapshot.data!);
+                          },
                         ),
                       ),
                     );
@@ -172,7 +199,7 @@ class LoginPage extends StatelessWidget {
                       children: <Widget>[
                         StreamBuilder<bool>(
                           stream: _rememberMe.state,
-                          initialData:false,
+                          initialData: false,
                           builder: (context, snapshot) {
                             return Checkbox(
                               value: snapshot.data,
