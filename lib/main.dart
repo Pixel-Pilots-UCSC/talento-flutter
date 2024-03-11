@@ -30,11 +30,11 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => LoginPage(),
         '/job-applicant' : (context) => MainLayout(),
-        '/profile': (context) => ProfilePage()
+        '/profile': (context) => ProfilePage(),
+        '/job': (context) => EmployerDashboard(),
         // '/job-employer' : (context) => checkAuthentication(),
       },
-      initialRoute: '/profile',
-      home: JobPostForm(),
+      initialRoute: '/job',
     );
   }
 }
