@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:talento/layout/main_layout.dart';
 import 'package:talento/themes/theme_data.dart';
+import 'package:talento/views/emp_job_post.dart';
+import 'package:talento/views/employer_dash.dart';
 import 'package:talento/views/profile_page.dart';
 import 'package:talento/views/login_page.dart';
 
@@ -32,6 +34,7 @@ class MyApp extends StatelessWidget {
         // '/job-employer' : (context) => checkAuthentication(),
       },
       initialRoute: '/profile',
+      home: JobPostForm(),
     );
   }
 }
