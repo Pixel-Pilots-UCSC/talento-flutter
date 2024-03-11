@@ -29,9 +29,9 @@ class MainLayout extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Timer.periodic(Duration(seconds: 1), (timer) {
-            _sampleBloc.generateRandomValue();
-          });
+          // Timer.periodic(Duration(seconds: 1), (timer) {
+          //   _sampleBloc.generateRandomValue();
+          // });
         },
         child: const Icon(Icons.restart_alt, color: Colors.white,),
       )
