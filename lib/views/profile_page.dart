@@ -71,9 +71,8 @@ class ProfilePage extends StatelessWidget {
                             ),
                           ),
                           image: DecorationImage(
-                            image:
-                                NetworkImage('https://img.freepik.com/free-vector/isolated-young-handsome-man-different-poses-white-background-illustration_632498-859.jpg?size=338&ext=jpg&ga=GA1.1.1395880969.1709942400&semt=ais'),
-                            fit: BoxFit.fill,
+                            image: AssetImage('assets/images/profile.jpg'),
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),

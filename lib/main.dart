@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => ProfilePage()
         // '/job-employer' : (context) => checkAuthentication(),
       },
-      initialRoute: '/',
+      initialRoute: '/profile',
     );
   }
 }
