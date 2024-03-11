@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 
 class FormField extends StatelessWidget {
   final String title;
-  final String hintText; // Change hintText type to String
+  final String hintText;
+  final int maxlines ;
+  final int minlines ;
   
   const FormField({
-    Key? key, // Change super.key to Key? key
+    super.key, // Change super.key to Key? key
     required this.title,
     required this.hintText,
+    required this.maxlines,
+    required this.minlines,
     
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +51,8 @@ class FormField extends StatelessWidget {
               
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: TextField(
+                maxLines: maxlines,
+                minLines:minlines,
                 
                 decoration: InputDecoration(
                   
