@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -151,6 +149,7 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(height: 16),
                 StreamBuilder<bool>(
                   stream: _passwordVisible.state,
+                  initialData:false,
                   builder: (context, snapshot) {
                     return TextField(
                       controller: passwordController,
@@ -173,6 +172,7 @@ class LoginPage extends StatelessWidget {
                       children: <Widget>[
                         StreamBuilder<bool>(
                           stream: _rememberMe.state,
+                          initialData:false,
                           builder: (context, snapshot) {
                             return Checkbox(
                               value: snapshot.data,

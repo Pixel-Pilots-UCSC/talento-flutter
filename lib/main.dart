@@ -7,6 +7,7 @@ import 'package:talento/views/emp_job_post.dart';
 import 'package:talento/views/employer_dash.dart';
 import 'package:talento/views/profile_page.dart';
 import 'package:talento/views/login_page.dart';
+import 'package:talento/views/signup_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
       theme: Themes.lightTheme,
       darkTheme: Themes.darkTheme,
       routes: {
-        '/': (context) => LoginPage(),
+        // '/': (context) => LoginPage(),
+        '/' : (context) => SignupPage(),
         '/job-applicant' : (context) => MainLayout(),
         '/profile': (context) => ProfilePage(),
         '/job': (context) => EmployerDashboard(),
