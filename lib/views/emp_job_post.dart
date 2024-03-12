@@ -12,9 +12,9 @@ class JobPostForm extends StatefulWidget {
 class _JobPostFormState extends State<JobPostForm> {
   final _stepsText = ["Description", "Location", "Salary", "Details"];
 
-  final _stepCircleRadius = 2.0;
+  final _stepCircleRadius = 8.0;
 
-  final _stepProgressViewHeight = 15.0;
+  final _stepProgressViewHeight = 5.0;
 
   final Color _activeColor = Colors.black;
 
@@ -40,7 +40,7 @@ class _JobPostFormState extends State<JobPostForm> {
       _inactiveColor,
       _headerStyle,
       _stepStyle,
-      decoration: BoxDecoration(color: Colors.white),
+      decoration: BoxDecoration(color: Colors.transparent),
       padding: const EdgeInsets.only(
         top: 20.0,
         left: 24.0,
@@ -116,7 +116,7 @@ class StepProgressView extends StatelessWidget {
         _stepStyle = stepsStyle,
         assert(curStep > 0 == true && curStep <= stepsText.length),
         assert(width > 0),
-        assert(height >= 2 * dotRadius),
+        // assert(height >= 2 * dotRadius),
         assert(width >= dotRadius * 2 * stepsText.length),
         super(key: key);
 
@@ -175,14 +175,14 @@ class StepProgressView extends StatelessWidget {
     return wids;
   }
 
-  List<Widget> _buildText() {
-    var wids = <Widget>[];
-    _stepsText.asMap().forEach((i, text) {
-      wids.add(Text(text, style: _stepStyle));
-    });
+  // List<Widget> _buildText() {
+  //   var wids = <Widget>[];
+  //   _stepsText.asMap().forEach((i, text) {
+  //     wids.add(Text(text, style: _stepStyle));
+  //   });
 
-    return wids;
-  }
+  //   return wids;
+  // }
 
   Widget build(BuildContext context) {
     return Container(
@@ -198,19 +198,25 @@ class StepProgressView extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: (_curStep).toString(),
+                      text: _stepsText.join(),
                       style: _headerStyle.copyWith(
                         color: _activeColor, //this is always going to be active
                       ),
                     ),
-                    TextSpan(
-                      text: " / " + _stepsText.length.toString(),
-                      style: _headerStyle.copyWith(
-                        color: _curStep == _stepsText.length
-                            ? _activeColor
-                            : _inactiveColor,
-                      ),
-                    ),
+                    // TextSpan(
+                    //   text: (_curStep).toString(),
+                    //   style: _headerStyle.copyWith(
+                    //     color: _activeColor, //this is always going to be active
+                    //   ),
+                    // ),
+                    // TextSpan(
+                    //   text: " / " + _stepsText.length.toString(),
+                    //   style: _headerStyle.copyWith(
+                    //     color: _curStep == _stepsText.length
+                    //         ? _activeColor
+                    //         : _inactiveColor,
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -222,10 +228,10 @@ class StepProgressView extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: _buildText(),
-          )
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: _buildText(),
+          // )
         ],
       ),
     );
