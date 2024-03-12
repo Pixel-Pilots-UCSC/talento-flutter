@@ -1,0 +1,48 @@
+{
+  "name": "CustomIcons",
+  "css_prefix_text": "",
+  "css_use_suffix": false,
+  "hinting": true,
+  "units_per_em": 1000,
+  "ascent": 850,
+  "glyphs": [
+    {
+      "uid": "4b7f817f780705a5d267ad59e855da91",
+      "css": "graduation-cap",
+      "code": 59392,
+      "src": "linecons"
+    },
+    {
+      "uid": "d531ea7e8c094b73df941ed0bac921f3",
+      "css": "shopping-bag",
+      "code": 62096,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "a7e58dab849c70dfe629c326046746e6",
+      "css": "medal",
+      "code": 62882,
+      "src": "fontawesome5"
+    },
+    {
+      "uid": "0e3f1335f83cca67329b2c4bcb3aaec5",
+      "css": "star-empty",
+      "code": 59393,
+      "src": "entypo"
+    },
+    {
+      "uid": "d7e33e066f6b9f91ccde907e01a09390",
+      "css": "push",
+      "code": 59394,
+      "src": "custom_icons",
+      "selected": true,
+      "svg": {
+        "path": "M39.1 936.3L52.7 822.3C64.5 723.8 98.4 637.5 153.5 565.6 197.7 508.2 255.1 459.8 324.2 422.3 407.8 376.6 487.5 357.8 528.1 350.4V63.7L960.9 496.1 528.1 928.9V644.5C525 644.5 522.3 644.5 518.7 644.5 438.7 644.5 237.9 664.1 106.6 843.8L39.1 936.3ZM518.8 584.4C544.9 584.4 560.9 586.3 561.7 586.3L588.3 589.5V784L876.2 496.1 588.3 208.2V403.5L561.3 406.2C560.5 406.2 457.8 417.2 351.2 475.8 244.9 534 173 616.8 136.3 722.3 275.8 599.6 444.1 584.4 518.8 584.4Z",
+        "width": 1000
+      },
+      "search": [
+        "push"
+      ]
+    }
+  ]
+}

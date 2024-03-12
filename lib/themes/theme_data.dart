@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Themes {
   static ThemeData lightTheme = ThemeData(
-    primaryColor: Colors.blue,
+    primaryColor: Color(0xFF3EB489),
     hintColor: Colors.blue,
     dividerColor: Colors.white54,
     colorScheme: ColorScheme.light(
       primary: Colors.blue, // A blue color for primary elements
       secondary: Colors.teal, // A teal color for secondary elements
       background: Colors.white, // A white background
-      surface: Color(0xFF61677D), // A slightly lighter surface color
+      surface: Colors.white, // A slightly lighter surface color
       error: Colors.red, // A red accent color for errors
       onPrimary: Colors.blue, // Text color on primary elements
       onSecondary: Colors.white, // Text color on secondary elements
@@ -18,13 +19,16 @@ class Themes {
       onError: Colors.white, // Text color on error
     ),
     appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.blue,
-      foregroundColor: Colors.white,
+      backgroundColor: Colors.white,
+      foregroundColor: Colors.black
     ),
     inputDecorationTheme: InputDecorationTheme(
       //no border
-      border: const OutlineInputBorder(
-        borderSide: BorderSide.none,
+      enabledBorder: const OutlineInputBorder(
+        borderSide: BorderSide(
+          width: 1,
+          color: Color(0xFF3EB489),
+        ),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       filled: true,
@@ -59,6 +63,7 @@ class Themes {
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
+
           ),
         ),
         padding: MaterialStateProperty.all(
@@ -81,11 +86,53 @@ class Themes {
         borderRadius: BorderRadius.circular(4),
       ),
     ),
+    sliderTheme: SliderThemeData(
+      activeTrackColor: Color(0xFF3EB489),
+      inactiveTrackColor: Colors.grey,
+      thumbColor: Color(0xFF3EB489),
+      overlayColor: Color(0x293EB489),
+      valueIndicatorColor: Color(0xFF3EB489),
+      valueIndicatorTextStyle: TextStyle(
+        color: Colors.white,
+      ),
+    ),
+    textTheme: TextTheme(
+      bodyMedium: TextStyle(
+        color: Colors.black,
+        fontFamily: GoogleFonts. inter().fontFamily,
+        fontSize: 14,
+      ),
+    ),
+    chipTheme: ChipThemeData(
+      backgroundColor: Colors.white24,
+      selectedColor: Color(0xFF00EC9E),
+      secondarySelectedColor: Colors.grey[200],
+      surfaceTintColor: Colors.grey[200],
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: BorderSide(
+          color: Colors.grey[500]!,
+          width: 1,
+        ),
+      ),
+      labelPadding: const EdgeInsets.symmetric(
+        vertical: 0,
+        horizontal: 5,
+      ),
+
+      labelStyle: TextStyle(
+        color: Colors.grey[800],
+      ),
+      secondaryLabelStyle: TextStyle(
+        color: Colors.white,
+      ),
+      brightness: Brightness.dark,
+    ),
 
   );
 
   static ThemeData darkTheme = ThemeData(
-    primaryColor: Colors.white,
+    primaryColor: Color(0xFF048658),
     hintColor: Colors.blue,
     dividerColor: Colors.black12,
     colorScheme: ColorScheme.dark(
@@ -112,6 +159,11 @@ class Themes {
       backgroundColor: Colors.black,
       foregroundColor: Colors.white,
     ),
+    drawerTheme: const DrawerThemeData(
+      surfaceTintColor: Colors.black,
+      elevation: 0,
+      backgroundColor: Colors.black,
+    ),
     inputDecorationTheme: InputDecorationTheme(
       //no border
       border: const OutlineInputBorder(
@@ -129,7 +181,6 @@ class Themes {
       iconColor: Colors.white,
       suffixIconColor: Colors.white,
     ),
-
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(Color(0xFF3EB489)),
@@ -181,6 +232,48 @@ class Themes {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(4),
       ),
+    ),
+    cardColor: Colors.black,
+    cardTheme: const CardTheme(
+      color: Colors.black,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+    ),
+    listTileTheme: ListTileThemeData(
+      tileColor: Colors.black,
+      textColor: Colors.grey[400]!,
+      contentPadding: EdgeInsets.symmetric(
+        vertical: 2,
+        horizontal: 10,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+    ),
+    chipTheme: ChipThemeData(
+      backgroundColor: Colors.white24,
+      selectedColor: Color(0xFF00603F),
+      secondarySelectedColor: Colors.grey[200],
+      padding: const EdgeInsets.symmetric(
+        vertical: 5,
+        horizontal: 5,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: BorderSide(
+          color: Colors.white38!,
+          width: 0.5,
+        ),
+      ),
+      labelStyle: TextStyle(
+        color: Colors.grey[200],
+      ),
+      secondaryLabelStyle: TextStyle(
+        color: Colors.black,
+      ),
+      brightness: Brightness.dark,
     ),
   );
 }
