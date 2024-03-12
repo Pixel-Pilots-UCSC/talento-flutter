@@ -89,7 +89,7 @@ class DashboardView extends StatelessWidget {
       body: SafeArea(
         child: StreamBuilder<bool>(
           stream: searchStartedBloc.state,
-          initialData: true,
+          initialData: false,
           builder: (context, searchStartedSnapshot) {
             bool _searchStarted = searchStartedSnapshot.data!;
             return Container(

@@ -15,7 +15,7 @@ import '../models/response.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
-  final TextEditingController emailController = TextEditingController(text: "kip.rutherford@gmail.com");
+  final TextEditingController emailController = TextEditingController(text: "elisa.graham-gleason@gmail.com");
   final TextEditingController passwordController = TextEditingController(text: "1234");
   final BooleanBloc _rememberMe = BooleanBloc();
   final BooleanBloc _passwordVisible = BooleanBloc();

@@ -21,7 +21,7 @@ class AppDrawer extends StatelessWidget {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userString = prefs.getString('user');
     UserModel user = UserModel.fromJson(jsonDecode(userString!));
-    print(user);
+    print(user.data);
 
     return user;
   }
