@@ -1,6 +1,6 @@
 import 'dart:async';
 
-abstract class BaseBloc<T> {
+abstract class BroadcastBaseBloc<T> {
   final StreamController<T> _stateController = StreamController<T>.broadcast();
   get state => _stateController.stream;
 
