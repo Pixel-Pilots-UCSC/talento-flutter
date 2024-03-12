@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:talento/models/auth_user.dart';
 import 'package:talento/models/user_model.dart';
+import 'package:talento/views/profile_page.dart';
 
 import '../constant.dart';
 
@@ -13,8 +14,8 @@ class AppDrawer extends StatelessWidget {
   GlobalKey<ScaffoldState> scaffoldKey;
   int selectedIndex = 0;
 
-  AppDrawer({super.key, required this.scaffoldKey, required this.selectedIndex});
-
+  AppDrawer(
+      {super.key, required this.scaffoldKey, required this.selectedIndex});
 
   getProfileData() async {
     //get profile data
@@ -105,7 +106,7 @@ class AppDrawer extends StatelessWidget {
                           height: 5.0,
                         ),
                         Text(
-                          'John Doe',
+                          'John Doe ',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16.0,
@@ -116,7 +117,6 @@ class AppDrawer extends StatelessWidget {
                   );
                 }
               },
-
             ),
           ),
           ListTile(
@@ -149,12 +149,31 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Item 2'),
+            title: Row(
+              children: [
+                Icon(
+                  Icons.person,
+                  color: selectedIndex == 0
+                      ? Theme.of(context).primaryColor
+                      : Theme.of(context).colorScheme.onBackground,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  'Profile',
+                  style: TextStyle(
+                    color: selectedIndex == 0
+                        ? Theme.of(context).primaryColor
+                        : Theme.of(context).colorScheme.onBackground,
+                  ),
+                ),
+              ],
+            ),
             onTap: () {
-              // Update the state of the app
-              // ...
-              // Then close the drawer
-              Navigator.pop(context);
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                return ProfilePage();
+              }));
             },
           ),
         ],
