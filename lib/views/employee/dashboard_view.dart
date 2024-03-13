@@ -198,10 +198,10 @@ class DashboardView extends StatelessWidget {
                 ),
                 if(!_searchStarted)
                 Container(
-                  height: 300,
+                  height: 270,
                   decoration: BoxDecoration(),
                   alignment: Alignment.center,
-                  margin: const EdgeInsets.only(top: 10),
+                  margin: const EdgeInsets.only(top: 10,left: 10,right: 10),
                   child: StreamBuilder<Response<Job>>(
                     stream: newJobBloc.state,
                     builder: (context, jobSnapshot) {
@@ -215,6 +215,7 @@ class DashboardView extends StatelessWidget {
                             Data job = jobSnapshot.data!.data!.data![index];
                             String salary = double.parse((job.salaryRange!.low! + job.salaryRange!.high! / 2).toString()).toStringAsFixed(0);
                             return JobCard(
+                                id: job.sId!,
                                 title: job.title ?? 'No Title',
                                 company: job.company!.name ?? 'No Company',
                                 location: job.location ?? 'No Location',
@@ -222,7 +223,9 @@ class DashboardView extends StatelessWidget {
                                 imageUrl: job.company!.logo ?? "https://miro.medium.com/v2/resize:fit:800/1*eYPD6Nie7QROiA6n0uPSTQ.png",
                                 bookmarked: false,
                                 jobType: job.jobType ?? "None",
-                                color: getColor(context,index)
+                                // color: getColor(context,index)
+                              // color: Color(0xC2232528),
+                              color: Theme.of(context).colorScheme.background == Colors.black ? Color(0xC2232528) : Color(0xFFFAFAFA),
                             );
                           },
                         );
@@ -236,6 +239,7 @@ class DashboardView extends StatelessWidget {
                           addRepaintBoundaries: false,
                           itemBuilder: (context, index) {
                             return JobCard(
+                                id: '1',
                                 title: 'No Title',
                                 company: 'No Location',
                                 location: 'No Location',
@@ -243,7 +247,9 @@ class DashboardView extends StatelessWidget {
                                 imageUrl: "https://miro.medium.com/v2/resize:fit:800/1*eYPD6Nie7QROiA6n0uPSTQ.png",
                                 bookmarked: false,
                                 jobType: "Remote",
-                                color: getColor(context,index)
+                                // color: getColor(context,index)
+                                // color: Color(0xC2232528)
+                                color: Theme.of(context).colorScheme.background == Colors.black ? Color(0xC2232528) : Color(0xFFFAFAFA),
                             );
                           },
                         ),
@@ -344,7 +350,7 @@ class DashboardView extends StatelessWidget {
                                   bookmarked: false,
                                   jobType: job.jobType ?? "None",
                                   color: Theme.of(context).colorScheme.background == Colors.black ? Color(0xFF36454F) : Color(
-                                      0xFFB2FFE2)
+                                      0xFFC2C2C2)
                               );
                             },
                           );
