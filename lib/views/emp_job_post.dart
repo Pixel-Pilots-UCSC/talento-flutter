@@ -1,5 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:talento/models/location_model.dart';
 import 'package:talento/themes/theme_data.dart';
+import 'package:talento/views/employee/Job%20Post/jp_description.dart';
+import 'package:talento/views/employee/Job%20Post/jp_location.dart';
+import 'package:talento/views/employee/Job%20Post/jp_salary.dart';
 
 class JobPostForm extends StatefulWidget {
   const JobPostForm({super.key});
@@ -8,22 +14,24 @@ class JobPostForm extends StatefulWidget {
   _JobPostFormState createState() => _JobPostFormState();
 }
 
-
 class _JobPostFormState extends State<JobPostForm> {
+  final locationModel =
+      LocationModel(['Location 1', 'Location 2', 'Location 3']);
   final _stepsText = ["Description", "Location", "Salary", "Details"];
 
-  final _stepCircleRadius = 8.0;
+  final _stepCircleRadius = 5.0;
 
   final _stepProgressViewHeight = 5.0;
 
-  final Color _activeColor = Colors.black;
+  final Color _activeColor = Themes.lightTheme.primaryColor;
 
   final Color _inactiveColor = Colors.grey;
 
   final TextStyle _headerStyle =
-      const TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold);
+      const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold);
 
-  final TextStyle _stepStyle = const TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold);
+  final TextStyle _stepStyle =
+      const TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold);
 
   late Size _safeAreaSize;
 
@@ -42,51 +50,108 @@ class _JobPostFormState extends State<JobPostForm> {
       _stepStyle,
       decoration: BoxDecoration(color: Colors.transparent),
       padding: const EdgeInsets.only(
-        top: 20.0,
+        top: 10.0,
         left: 24.0,
         right: 24.0,
       ),
     );
   }
 
-//Build method of Main Page
   Widget build(BuildContext context) {
     var mediaQD = MediaQuery.of(context);
     _safeAreaSize = mediaQD.size;
+    var _pageController = PageController(initialPage: _curPage - 1);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text("Job Post", style: TextStyle(color: Colors.black, fontSize: 25.0, fontWeight: FontWeight.bold)),
-
-      ),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Text("Job Post",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 22.0,
+              )),
+        ),
         body: Column(
-      children: <Widget>[
-        Container(height: 120.0, child: _getStepProgress()),
-        Expanded(
-          child: PageView(
-            onPageChanged: (i) {
-              setState(() {
-                _curPage = i + 1;
-              });
-            },
-            children: <Widget>[
-              Container(
-                color: Colors.blue,
+          children: <Widget>[
+            Container(height: 80.0, child: _getStepProgress()),
+            Expanded(
+              child: PageView(
+                controller: _pageController,
+                onPageChanged: (i) {
+                  setState(() {
+                    _curPage = i + 1;
+                  });
+                },
+                children: <Widget>[
+                  SingleChildScrollView(
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          buildDropdown('Industry',
+                              ['Industry 1', 'Industry 2', 'Industry 3']),
+                          SizedBox(height: 2),
+                          buildDropdown('Category',
+                              ['Category 1', 'Category 2', 'Category 3']),
+                          SizedBox(height: 2),
+                          buildTextFormField("Job Position"),
+                          SizedBox(height: 2),
+                          buildDropdown(
+                              'Job Type', ['Type 1', 'Type 2', 'Type 3']),
+                          SizedBox(height: 2),
+                          buildDropdown('Workspace Type',
+                              ['Workspace 1', 'Workspace 2', 'Workspace 3']),
+                          SizedBox(height: 80),
+                          nextBtnEmp(_pageController)
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(child: LocationPage(locationModel: locationModel)),
+                  Container(
+                      child: Padding(
+                    padding: const EdgeInsets.only(bottom: 80),
+                    child: Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SalaryRangeSelector(),
+                          SizedBox(height: 80),
+                          nextBtnEmp(_pageController)
+                        ],
+                      ),
+                    ),
+                  )),
+                  Container(
+                    color: Colors.red,
+                  ),
+                ],
               ),
-              Container(
-                color: Colors.amber,
-              ),
-              Container(
-                color: Colors.cyan,
-              ),
-              Container(
-                color: Colors.red,
-              ),
-            ],
-          ),
-        )
-      ],
-    ));
+            )
+          ],
+        ));
+  }
+
+  Padding nextBtnEmp(PageController _pageController) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 80.0, vertical: 8.0),
+      child: SizedBox(
+        height: 50,
+        // width: 50,
+        child: ElevatedButton(
+          onPressed: () {
+            setState(() {
+              _pageController.animateToPage(
+                _curPage,
+                duration: Duration(milliseconds: 500),
+                curve: Curves.ease,
+              );
+            });
+          },
+          child: Text('Next'),
+        ),
+      ),
+    );
   }
 }
 
@@ -149,9 +214,9 @@ class StepProgressView extends StatelessWidget {
     var wids = <Widget>[];
     _stepsText.asMap().forEach((i, text) {
       var circleColor =
-          (i == 0 || _curStep > i + 1) ? _activeColor : _inactiveColor;
+          (i == 0 || _curStep >= i + 1) ? _activeColor : _inactiveColor;
 
-      var lineColor = _curStep > i + 1 ? _activeColor : _inactiveColor;
+      // var lineColor = _curStep > i + 1 ? _activeColor : _inactiveColor;
 
       wids.add(CircleAvatar(
         radius: _dotRadius,
@@ -161,14 +226,16 @@ class StepProgressView extends StatelessWidget {
       //add a line separator
       //0-------0--------0
       if (i != _stepsText.length - 1) {
-        wids.add(
-          Expanded(
-            child: Container(
-              height: lineHeight,
-              color: lineColor,
-            ),
-          ),
-        );
+        wids.add(SizedBox(
+          width: 10,
+        )
+            // Expanded(
+            //   child: Container(
+            //     height: lineHeight,
+            //     color: lineColor,
+            //   ),
+            // ),
+            );
       }
     });
 
@@ -190,17 +257,24 @@ class StepProgressView extends StatelessWidget {
       height: this._height,
       width: this._width,
       decoration: this.decoration,
-      child: Column(
-        children: <Widget>[
-          Container(
-            child: Center(
+      child: Center(
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: _buildDots(),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
               child: RichText(
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: _stepsText.join(),
+                      text: _stepsText.elementAt(_curStep - 1),
                       style: _headerStyle.copyWith(
-                        color: _activeColor, //this is always going to be active
+                        color: Colors.black, //this is always going to be active
                       ),
                     ),
                     // TextSpan(
@@ -221,18 +295,12 @@ class StepProgressView extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-          Row(
-            children: _buildDots(),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: _buildText(),
-          // )
-        ],
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: _buildText(),
+            // )
+          ],
+        ),
       ),
     );
   }

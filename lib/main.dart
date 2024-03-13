@@ -40,9 +40,10 @@ class MyApp extends StatelessWidget {
         '/job': (context) => EmployerDashboard(),
         // '/': (context) => SignupPage(),
         '/job-applicant' : (context) => DashboardView(),
+        '/job-post-new' : (context) => JobPostForm(),
         // '/job-employer' : (context) => checkAuthentication(),
       },
-      initialRoute: '/',
+      initialRoute: '/job-post-new',
     );
   }
 }
