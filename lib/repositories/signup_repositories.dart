@@ -6,7 +6,7 @@ import 'package:talento/networking/api_provider.dart';
 class SignupRepositories{
   APIProvider _provider = APIProvider();
 
-  signup(String name,String email, String password) {
+  signup(String name,String email, String password,String confirmPassword) {
     BaseOptions options = BaseOptions(
       headers: {
         "Content-Type": "application/json",
@@ -15,7 +15,9 @@ class SignupRepositories{
     Object data = {
       "name":name,
       "email": email,
-      "password": password
+      "password": password,
+      "confirm_password": confirmPassword,
+      "role": "employer"
     };
     dynamic res = APIProvider.post("/auth/signup", data);
     return res;

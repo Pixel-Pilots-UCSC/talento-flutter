@@ -21,7 +21,7 @@ class ToastUtil{
       closeButtonShowType: CloseButtonShowType.none,
       closeOnClick: false,
       dragToClose: true,
-      applyBlurEffect: true,
+      applyBlurEffect: false,
     );
   }
 
@@ -41,7 +41,8 @@ class ToastUtil{
       closeButtonShowType: CloseButtonShowType.none,
       closeOnClick: false,
       dragToClose: true,
-      applyBlurEffect: true,
+      applyBlurEffect: false,
+      primaryColor: Color(0xC38F1400),
     );
   }
 }
