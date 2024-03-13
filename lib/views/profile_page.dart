@@ -35,6 +35,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.background,
           key: _scaffoldKey,
           appBar: AppBar(
               backgroundColor: Colors.transparent,
@@ -126,7 +127,7 @@ class ProfilePage extends StatelessWidget {
                                       }),
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                              Colors.green),
+                                              Color(0xFF3EB489)),
                                     ),
                                     onPressed: () {},
                                     child: const Row(
@@ -158,7 +159,7 @@ class ProfilePage extends StatelessWidget {
                         ProfileList(
                           title: 'About me',
                           bgColor: Colors.blue,
-                          iconColor: Colors.green,
+                          iconColor: Color(0xFF3EB489),
                           icon: Icons.person_outline,
                           onTap: () {
                             Navigator.of(context)
@@ -171,7 +172,7 @@ class ProfilePage extends StatelessWidget {
                         ProfileList(
                           title: 'work experience',
                           bgColor: Colors.red,
-                          iconColor: Colors.green,
+                          iconColor: Color(0xFF3EB489),
                           icon: Icons.shopping_bag_outlined,
                           onTap: () {
                             Navigator.of(context)
@@ -184,7 +185,7 @@ class ProfilePage extends StatelessWidget {
                         ProfileList(
                           title: 'Education',
                           bgColor: Colors.orange,
-                          iconColor: Colors.green,
+                          iconColor: Color(0xFF3EB489),
                           icon: Icons.school_outlined,
                           onTap: () {
                             // Navigator.of(context)
@@ -197,7 +198,7 @@ class ProfilePage extends StatelessWidget {
                         ProfileList(
                           title: 'Skill',
                           bgColor: Colors.purple,
-                          iconColor: Colors.green,
+                          iconColor: Color(0xFF3EB489),
                           icon: Icons.grade_outlined,
                           onTap: () {
                             Navigator.of(context)
@@ -210,7 +211,7 @@ class ProfilePage extends StatelessWidget {
                         ProfileList(
                           title: 'Qualifications',
                           bgColor: Colors.grey,
-                          iconColor: Colors.green,
+                          iconColor: Color(0xFF3EB489),
                           icon: Icons.verified_user_outlined,
                           onTap: () {
                             Navigator.of(context)

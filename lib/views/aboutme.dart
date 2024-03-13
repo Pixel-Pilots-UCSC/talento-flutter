@@ -81,7 +81,7 @@ class AboutMe extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
+          color: Theme.of(context).colorScheme.background,
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.2),
@@ -97,6 +97,7 @@ class AboutMe extends StatelessWidget {
                         decoration: InputDecoration(
                           labelText: 'Phone Number',
                           border: InputBorder.none,
+                          
                         ),
                         initialCountryCode: 'LK',
                         // onChanged: (phone) {
@@ -139,7 +140,7 @@ class AboutMe extends StatelessWidget {
                             );
                           }),
                           backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.white),
+                              MaterialStateProperty.all<Color>(Color(0xFF3EB489)),
                         ),
                         onPressed: () {},
                         child: Row(

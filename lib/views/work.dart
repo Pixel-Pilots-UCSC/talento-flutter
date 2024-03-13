@@ -43,7 +43,7 @@ class WorkEx extends StatelessWidget {
                 const Row(
                   children: [
                     SizedBox(
-                      width: 205,
+                      width: 195,
                       child: custom.FormField(
                         minlines: 1,
                   maxlines: 1,
@@ -52,7 +52,7 @@ class WorkEx extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      width: 205,
+                      width: 195,
                       child: custom.FormField(
                         minlines: 1,
                   maxlines: 1,

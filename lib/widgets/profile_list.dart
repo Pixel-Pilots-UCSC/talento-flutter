@@ -20,12 +20,15 @@ class ProfileList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+          // backgroundColor: Theme.of(context).colorScheme.background;
+
     return Padding(
       padding: const EdgeInsets.only(right: 30.0, left: 30.0),
       child: Container(
+
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.background,
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.2),
@@ -80,7 +83,7 @@ class ProfileList extends StatelessWidget {
                     width: 35,
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.green,
+                      color: Color(0xFF3EB489),
                     ),
                     child: const Icon(
                       Icons.add,
