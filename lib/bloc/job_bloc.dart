@@ -23,6 +23,8 @@ class JobBloc extends BroadcastBaseBloc<Response<Job>>{
     }
   }
 
+
+
   JobBloc(){
     getJobs();
 
