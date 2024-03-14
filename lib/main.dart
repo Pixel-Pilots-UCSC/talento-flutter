@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       builder: EasyLoading.init(),
       routes: {
         // '/': (context) => LoginPage(),
-        '/' : (context) => LoginPage(),
+        '/' : (context) => SignupPage(),
         '/job-applicant' : (context) => MainLayout(),
         '/profile': (context) => ProfilePage(),
         '/job': (context) => EmployerDashboard(),

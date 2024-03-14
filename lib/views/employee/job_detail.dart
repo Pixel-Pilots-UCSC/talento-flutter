@@ -365,7 +365,7 @@ class JobDetail extends StatelessWidget {
                     ),
                   ),
                   child: IconButton(
-                    padding: EdgeInsets.all(2),
+                    padding: const EdgeInsets.all(2),
                     visualDensity: VisualDensity.compact,
                     onPressed: () {
                       // Bookmark the job
@@ -373,7 +373,7 @@ class JobDetail extends StatelessWidget {
                     icon: Icon(Icons.bookmark_border, color: Theme.of(context).colorScheme.onBackground),
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Container(
                     child: ElevatedButton(

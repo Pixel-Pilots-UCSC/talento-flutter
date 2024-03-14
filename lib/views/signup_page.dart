@@ -5,25 +5,72 @@ import 'package:flutter/widgets.dart';
 import 'package:talento/bloc/boolean_bloc.dart';
 
 import '../bloc/signup_bloc.dart';
+import '../models/response.dart';
+import '../util/loader_util.dart';
+import '../util/toast_util.dart';
 
 class SignupPage extends StatelessWidget {
   SignupPage({super.key});
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController nameController = TextEditingController(text: "Isurika");
+  final TextEditingController emailController = TextEditingController(text: "isu@mathara.com");
+  final TextEditingController passwordController = TextEditingController(text: "123456");
+  final TextEditingController confirmPasswordController = TextEditingController(text: "123456");
   final BooleanBloc _passwordVisible = BooleanBloc();
   final BooleanBloc _confirmPasswordVisible = BooleanBloc();
   final SignupBloc _signupBloc = SignupBloc();
+  bool _initialized = false;
 
-  _signupUser() {
+  _signupUser(BuildContext context) {
+    //check email is valid
+    if(nameController.text.isEmpty){
+      ToastUtil().showErrorToast(context, 'Error', 'Name cannot be empty');
+      return;
+    }
+    if(emailController.text.isEmpty){
+      ToastUtil().showErrorToast(context, 'Error', 'Email cannot be empty');
+      return;
+    }
+    if(passwordController.text.isEmpty){
+      ToastUtil().showErrorToast(context, 'Error', 'Password cannot be empty');
+      return;
+    }
+    if(confirmPasswordController.text.isEmpty){
+      ToastUtil().showErrorToast(context, 'Error', 'Confirm Password cannot be empty');
+      return;
+    }
+    if(passwordController.text != confirmPasswordController.text){
+      ToastUtil().showErrorToast(context, 'Error', 'Passwords do not match');
+      return;
+    }
     _signupBloc.signup(
-        nameController.text, emailController.text, passwordController.text);
+        nameController.text,
+        emailController.text,
+        passwordController.text,
+        confirmPasswordController.text);
   }
 
   @override
   Widget build(BuildContext context) {
     _passwordVisible.set(false);
     _confirmPasswordVisible.set(false);
+    if(!_initialized){
+      _signupBloc.state.listen((event) {
+        if(event.status == Status.COMPLETED){
+          ToastUtil().showSuccessToast(context, 'Success', 'Login Successful');
+          Navigator.pushNamed(context, '/job-applicant');
+          LoaderUtil.hideLoader();
+        }else if(event.status == Status.ERROR){
+          LoaderUtil.hideLoader();
+        Future.delayed(const Duration(milliseconds: 5), () => {
+            ToastUtil().showErrorToast(context, 'Error', event.message),
+
+          });
+        }else if(event.status == Status.LOADING){
+          LoaderUtil.showLoader(context, message: 'Trying to Access..');
+        }
+      });
+      _initialized = true;
+    }
     return Scaffold(
         body: SafeArea(
             child: Center(
@@ -122,7 +169,7 @@ class SignupPage extends StatelessWidget {
                 initialData: false,
                 builder: (context, snapshot) {
                   return TextField(
-                    controller: passwordController,
+                    controller: confirmPasswordController,
                     obscureText: !snapshot.data!,
                     decoration: InputDecoration(
                       hintText: 'Confirm Password',
@@ -143,7 +190,7 @@ class SignupPage extends StatelessWidget {
                     : 350,
                 child: ElevatedButton(
                   onPressed: () {
-                    _signupUser();
+                    _signupUser(context);
                   },
                   child: const Text('Signup'),
                 ),
