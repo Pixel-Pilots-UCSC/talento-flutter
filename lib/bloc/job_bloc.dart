@@ -4,10 +4,9 @@ import 'package:talento/core/base_bloc.dart';
 import 'package:talento/models/job_model.dart';
 import 'package:talento/networking/api_provider.dart';
 
-import '../core/broadcast_base_bloc.dart';
 import '../models/response.dart';
 
-class JobBloc extends BroadcastBaseBloc<Response<Job>>{
+class JobBloc extends BaseBloc<Response<Job>>{
 
 
   void getJobs() async {

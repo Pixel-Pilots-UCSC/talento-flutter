@@ -1,8 +1,9 @@
 
 
-import '../core/base_bloc.dart';
+import 'package:talento/core/broadcast_base_bloc.dart';
 
-class BooleanBloc extends BaseBloc<bool> {
+
+class BooleanBloc extends BroadcastBaseBloc<bool> {
   void toggle() {
     emit(!state.value);
   }

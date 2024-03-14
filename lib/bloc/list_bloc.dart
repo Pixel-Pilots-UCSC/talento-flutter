@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:talento/core/broadcast_base_bloc.dart';
+
 import '../core/base_bloc.dart';
 
-class ListBloc<T> extends BaseBloc<List<T>> {
+class ListBloc<T> extends BroadcastBaseBloc<List<T>> {
   void add(String tag, List<String> list) {
     if(list.contains(tag)) return;
     list.add(tag);

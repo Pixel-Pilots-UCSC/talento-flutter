@@ -8,9 +8,16 @@ class APIProvider{
   static const String _baseUrl = 'http://10.0.2.2:4000/api';
 
   static get(String url, Options? options, {Map<String, dynamic>? queryParameters}) async {
-    final response = await Dio().get(
+    BaseOptions _options = BaseOptions(
+      connectTimeout: const Duration(seconds: 7),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    );
+    final response = await Dio(
+        _options
+    ).get(
         _baseUrl + url,
-        options: options,
         queryParameters:
         queryParameters
     );
@@ -19,7 +26,15 @@ class APIProvider{
 
   static post(String url,Object? data) async {
     try {
-      final response = await Dio().post(
+      BaseOptions options = BaseOptions(
+        connectTimeout: const Duration(seconds: 7),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      );
+      final response = await Dio(
+          options
+      ).post(
           _baseUrl + url,
           data: data
       );

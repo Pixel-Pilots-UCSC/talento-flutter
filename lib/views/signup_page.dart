@@ -11,10 +11,15 @@ import '../util/toast_util.dart';
 
 class SignupPage extends StatelessWidget {
   SignupPage({super.key});
-  final TextEditingController nameController = TextEditingController(text: "Isurika");
-  final TextEditingController emailController = TextEditingController(text: "isu@mathara.com");
-  final TextEditingController passwordController = TextEditingController(text: "123456");
-  final TextEditingController confirmPasswordController = TextEditingController(text: "123456");
+
+  final TextEditingController nameController =
+      TextEditingController(text: "Isurika");
+  final TextEditingController emailController =
+      TextEditingController(text: "isu@mathara.com");
+  final TextEditingController passwordController =
+      TextEditingController(text: "123456");
+  final TextEditingController confirmPasswordController =
+      TextEditingController(text: "123456");
   final BooleanBloc _passwordVisible = BooleanBloc();
   final BooleanBloc _confirmPasswordVisible = BooleanBloc();
   final SignupBloc _signupBloc = SignupBloc();
@@ -22,50 +27,49 @@ class SignupPage extends StatelessWidget {
 
   _signupUser(BuildContext context) {
     //check email is valid
-    if(nameController.text.isEmpty){
+    if (nameController.text.isEmpty) {
       ToastUtil().showErrorToast(context, 'Error', 'Name cannot be empty');
       return;
     }
-    if(emailController.text.isEmpty){
+    if (emailController.text.isEmpty) {
       ToastUtil().showErrorToast(context, 'Error', 'Email cannot be empty');
       return;
     }
-    if(passwordController.text.isEmpty){
+    if (passwordController.text.isEmpty) {
       ToastUtil().showErrorToast(context, 'Error', 'Password cannot be empty');
       return;
     }
-    if(confirmPasswordController.text.isEmpty){
-      ToastUtil().showErrorToast(context, 'Error', 'Confirm Password cannot be empty');
+    if (confirmPasswordController.text.isEmpty) {
+      ToastUtil()
+          .showErrorToast(context, 'Error', 'Confirm Password cannot be empty');
       return;
     }
-    if(passwordController.text != confirmPasswordController.text){
+    if (passwordController.text != confirmPasswordController.text) {
       ToastUtil().showErrorToast(context, 'Error', 'Passwords do not match');
       return;
     }
-    _signupBloc.signup(
-        nameController.text,
-        emailController.text,
-        passwordController.text,
-        confirmPasswordController.text);
+    _signupBloc.signup(nameController.text, emailController.text,
+        passwordController.text, confirmPasswordController.text);
   }
 
   @override
   Widget build(BuildContext context) {
     _passwordVisible.set(false);
     _confirmPasswordVisible.set(false);
-    if(!_initialized){
+    if (!_initialized) {
       _signupBloc.state.listen((event) {
-        if(event.status == Status.COMPLETED){
+        if (event.status == Status.COMPLETED) {
           ToastUtil().showSuccessToast(context, 'Success', 'Login Successful');
           Navigator.pushNamed(context, '/job-applicant');
           LoaderUtil.hideLoader();
-        }else if(event.status == Status.ERROR){
+        } else if (event.status == Status.ERROR) {
           LoaderUtil.hideLoader();
-        Future.delayed(const Duration(milliseconds: 5), () => {
-            ToastUtil().showErrorToast(context, 'Error', event.message),
-
-          });
-        }else if(event.status == Status.LOADING){
+          Future.delayed(
+              const Duration(milliseconds: 5),
+              () => {
+                    ToastUtil().showErrorToast(context, 'Error', event.message),
+                  });
+        } else if (event.status == Status.LOADING) {
           LoaderUtil.showLoader(context, message: 'Trying to Access..');
         }
       });
@@ -199,10 +203,12 @@ class SignupPage extends StatelessWidget {
               // const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Text('Already have an account?'),
                   SizedBox(width: 6),
-                  TextButton(onPressed: null, child: Text('Sign In')),
+                  TextButton(onPressed: (){
+                    Navigator.pushNamed(context, '/');
+                  }, child: Text('Sign In')),
                 ],
               ),
             ],
