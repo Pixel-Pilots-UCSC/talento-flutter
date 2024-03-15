@@ -80,20 +80,16 @@ class DashboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    bool _searchStarted = false;
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       appBar: CustomAppBar(scaffoldKey: _scaffoldKey),
       drawer: AppDrawer(scaffoldKey: _scaffoldKey,selectedIndex: 0,),
       body: SafeArea(
-        child: StreamBuilder<bool>(
-          stream: searchStartedBloc.state,
-          initialData: false,
-          builder: (context, searchStartedSnapshot) {
-            bool _searchStarted = searchStartedSnapshot.data!;
-            return Container(
-                child: Column(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+            child: Column(
               children: [
                 //search bar with search filter icon
                 Container(
@@ -196,38 +192,47 @@ class DashboardView extends StatelessWidget {
                     ],
                   ),
                 ),
-                if(!_searchStarted)
-                Container(
-                  height: 270,
-                  decoration: BoxDecoration(),
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.only(top: 10,left: 10,right: 10),
-                  child: StreamBuilder<Response<Job>>(
+                StreamBuilder<Response<Job>>(
                     stream: newJobBloc.state,
                     builder: (context, jobSnapshot) {
                       if(jobSnapshot.hasData && jobSnapshot.data!.status == Status.COMPLETED){
-                        return ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: jobSnapshot.data!.data!.data!.length,
-                          addAutomaticKeepAlives: true,
-                          addRepaintBoundaries: false,
-                          itemBuilder: (context, index) {
-                            Data job = jobSnapshot.data!.data!.data![index];
-                            String salary = double.parse((job.salaryRange!.low! + job.salaryRange!.high! / 2).toString()).toStringAsFixed(0);
-                            return JobCard(
-                                id: job.sId!,
-                                title: job.title ?? 'No Title',
-                                company: job.company!.name ?? 'No Company',
-                                location: job.location ?? 'No Location',
-                                salary: salary,
-                                imageUrl: job.company!.logo ?? "https://miro.medium.com/v2/resize:fit:800/1*eYPD6Nie7QROiA6n0uPSTQ.png",
-                                bookmarked: false,
-                                jobType: job.jobType ?? "None",
-                                // color: getColor(context,index)
-                              // color: Color(0xC2232528),
-                              color: Theme.of(context).colorScheme.background == Colors.black ? Color(0xC2232528) : Color(0xFFFAFAFA),
-                            );
-                          },
+                        return StreamBuilder<bool>(
+                            stream: searchStartedBloc.state,
+                            initialData: _searchStarted,
+                            builder: (context, searchSnapshot) {
+                              if (searchSnapshot.hasData && !searchSnapshot.data!) {
+                                return Container(
+                                  height: 270,
+                                  decoration: BoxDecoration(),
+                                  alignment: Alignment.center,
+                                  margin: const EdgeInsets.only(top: 10,left: 10,right: 10),
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: jobSnapshot.data!.data!.data!.length,
+                                    addAutomaticKeepAlives: true,
+                                    addRepaintBoundaries: false,
+                                    itemBuilder: (context, index) {
+                                      Data job = jobSnapshot.data!.data!.data![index];
+                                      String salary = double.parse((job.salaryRange!.low! + job.salaryRange!.high! / 2).toString()).toStringAsFixed(0);
+                                      return JobCard(
+                                        id: job.sId!,
+                                        title: job.title ?? 'No Title',
+                                        company: job.company!.name ?? 'No Company',
+                                        location: job.location ?? 'No Location',
+                                        salary: salary,
+                                        imageUrl: job.company!.logo ?? "https://miro.medium.com/v2/resize:fit:800/1*eYPD6Nie7QROiA6n0uPSTQ.png",
+                                        bookmarked: false,
+                                        jobType: job.jobType ?? "None",
+                                        // color: getColor(context,index)
+                                        // color: Color(0xC2232528),
+                                        color: Theme.of(context).colorScheme.background == Colors.black ? Color(0xC2232528) : Color(0xFFFAFAFA),
+                                      );
+                                    },
+                                  ),
+                                );
+                              }
+                              return Container();
+                            }
                         );
                       }
                       return Skeletonizer(
@@ -239,149 +244,168 @@ class DashboardView extends StatelessWidget {
                           addRepaintBoundaries: false,
                           itemBuilder: (context, index) {
                             return JobCard(
-                                id: '1',
-                                title: 'No Title',
-                                company: 'No Location',
-                                location: 'No Location',
-                                salary: '10,000',
-                                imageUrl: "https://miro.medium.com/v2/resize:fit:800/1*eYPD6Nie7QROiA6n0uPSTQ.png",
-                                bookmarked: false,
-                                jobType: "Remote",
-                                // color: getColor(context,index)
-                                // color: Color(0xC2232528)
-                                color: Theme.of(context).colorScheme.background == Colors.black ? Color(0xC2232528) : Color(0xFFFAFAFA),
+                              id: '1',
+                              title: 'No Title',
+                              company: 'No Location',
+                              location: 'No Location',
+                              salary: '10,000',
+                              imageUrl: "https://miro.medium.com/v2/resize:fit:800/1*eYPD6Nie7QROiA6n0uPSTQ.png",
+                              bookmarked: false,
+                              jobType: "Remote",
+                              // color: getColor(context,index)
+                              // color: Color(0xC2232528)
+                              color: Theme.of(context).colorScheme.background == Colors.black ? Color(0xC2232528) : Color(0xFFFAFAFA),
                             );
                           },
                         ),
                       );
                     }
-                  ),
                 ),
 
                 //List of Filters as Chips
                 StreamBuilder<Map<String,bool>>(
-                  stream: mapBloc.state,
-                  initialData: filterList,
-                  builder: (context, snapshot) {
-                      return Skeletonizer(
-                        enabled: snapshot.connectionState == ConnectionState.done,
-                        child: Container(
-                          height: 40,
-                          margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                          child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: snapshot.data!.keys.length,
+                    stream: mapBloc.state,
+                    initialData: filterList,
+                    builder: (context, snapshot) {
+                      return StreamBuilder<bool>(
+                        stream: searchStartedBloc.state,
+                        initialData: _searchStarted,
+                        builder: (context, searchSnapshot) {
+                          if(searchSnapshot.hasData && searchSnapshot.data!) {
+                            if(searchSnapshot.data!){
+                              return Container();
+                            }
+                            return Container(
+                            height: 40,
+                            margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                            child: ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: snapshot.data!.keys.length,
                               separatorBuilder: (context, index) => SizedBox(
                                 width: 10,
                               ),
-                            itemBuilder: (context, index) {
-                              String filterName = snapshot.data!.keys.toList()[index];
-                              bool isSelected = snapshot.data!.values.toList()[index];
-                              return FilterChip(
-                                label: Text(
-                                  filterName
-                                ),
-                                selected: isSelected,
-                                elevation: 1,
-                                padding: const EdgeInsets.all(5),
-                                onSelected: (bool value) {
-                                  jobBloc.filterJobs(snapshot.data!,filterName,!isSelected);
-                                  mapBloc.setValue(snapshot.data!,filterName,!isSelected);
-                                },
-                              );
-                            },
-                          ),
-                        ),
+                              itemBuilder: (context, index) {
+                                String filterName = snapshot.data!.keys.toList()[index];
+                                bool isSelected = snapshot.data!.values.toList()[index];
+                                return FilterChip(
+                                  label: Text(
+                                      filterName
+                                  ),
+                                  selected: isSelected,
+                                  elevation: 1,
+                                  padding: const EdgeInsets.all(5),
+                                  onSelected: (bool value) {
+                                    jobBloc.filterJobs(snapshot.data!,filterName,!isSelected);
+                                    mapBloc.setValue(snapshot.data!,filterName,!isSelected);
+                                  },
+                                );
+                              },
+                            ),
+                          );
+                          }
+                          return Container();
+                        }
                       );
-
-                  }
+                    }
                 ),
                 //Recommended For You
                 if(!_searchStarted)
-                Container(
-                  margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Recommended For You',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                  StreamBuilder<bool>(
+                    stream: searchStartedBloc.state,
+                    initialData: _searchStarted,
+                    builder: (context, snapshot) {
+                      bool searchStarted = snapshot.data!;
+                      return Container(
+                        margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              searchStarted?'Search Results':'Recommended For You',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            if(!searchStarted)
+                            ElevatedButton(
+                              onPressed: () {},
+                              child: Text(
+                                'View All',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text(
-                          'View All',
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                    ],
+                      );
+                    }
                   ),
-                ),
                 // set of tiles for recommended jobs
-                Container(
-                  height: _searchStarted?MediaQuery.of(context).size.height - 250: MediaQuery.of(context).size.height -600,
-                  decoration: BoxDecoration(),
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.only(top: 10),
-                  child: StreamBuilder<Response<Job>>(
-                      stream: jobBloc.state,
-                      builder: (context, jobSnapshot) {
-                        if(jobSnapshot.hasData && jobSnapshot.data !=null && jobSnapshot.data!.status == Status.COMPLETED){
-                          return ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            itemCount: jobSnapshot.data!.data!.data!.length,
-                            addAutomaticKeepAlives: true,
-                            addRepaintBoundaries: false,
-                            itemBuilder: (context, index) {
-                              Data job = jobSnapshot.data!.data!.data![index];
-                              String salary = double.parse((job.salaryRange!.low! + job.salaryRange!.high! / 2).toString()).toStringAsFixed(0);
-                              return JobTiles(
-                                  title: job.title ?? 'No Title',
-                                  company: job.company!.name ?? 'No Company',
-                                  location: job.location ?? 'No Location',
-                                  salary: salary,
-                                  imageUrl: job.company!.logo ?? "https://miro.medium.com/v2/resize:fit:800/1*eYPD6Nie7QROiA6n0uPSTQ.png",
-                                  bookmarked: false,
-                                  jobType: job.jobType ?? "None",
-                                  color: Theme.of(context).colorScheme.background == Colors.black ? Color(0xFF36454F) : Color(
-                                      0xFFC2C2C2)
+                StreamBuilder<bool>(
+                  stream: searchStartedBloc.state,
+                  initialData: _searchStarted,
+                  builder: (context, snapshot) {
+                    bool searchStarted = snapshot.data!;
+                    return Container(
+                        height: searchStarted?MediaQuery.of(context).size.height - 250: MediaQuery.of(context).size.height -600,
+                        decoration: BoxDecoration(),
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.only(top: 10),
+                        child: StreamBuilder<Response<Job>>(
+                            stream: jobBloc.state,
+                            builder: (context, jobSnapshot) {
+                              if(jobSnapshot.hasData && jobSnapshot.data !=null && jobSnapshot.data!.status == Status.COMPLETED){
+                                return ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: jobSnapshot.data!.data!.data!.length,
+                                  addAutomaticKeepAlives: true,
+                                  addRepaintBoundaries: false,
+                                  itemBuilder: (context, index) {
+                                    Data job = jobSnapshot.data!.data!.data![index];
+                                    String salary = double.parse((job.salaryRange!.low! + job.salaryRange!.high! / 2).toString()).toStringAsFixed(0);
+                                    return JobTiles(
+                                        title: job.title ?? 'No Title',
+                                        company: job.company!.name ?? 'No Company',
+                                        location: job.location ?? 'No Location',
+                                        salary: salary,
+                                        imageUrl: job.company!.logo ?? "https://miro.medium.com/v2/resize:fit:800/1*eYPD6Nie7QROiA6n0uPSTQ.png",
+                                        bookmarked: false,
+                                        jobType: job.jobType ?? "None",
+                                        color: Theme.of(context).colorScheme.background == Colors.black ? Color(0xFF36454F) : Color(
+                                            0xFFC2C2C2)
+                                    );
+                                  },
+                                );
+                              }
+                              return Skeletonizer(
+                                enabled: true,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: 10,
+                                  itemBuilder: (context, index) {
+                                    return JobTiles(
+                                        title: 'No Title',
+                                        company: 'No Location',
+                                        location: 'No Location',
+                                        salary: '10,000',
+                                        imageUrl: "https://miro.medium.com/v2/resize:fit:800/1*eYPD6Nie7QROiA6n0uPSTQ.png",
+                                        bookmarked: false,
+                                        jobType: "Remote",
+                                        color: Theme.of(context).colorScheme.background == Colors.black ? Color(0xFF36454F) : Color(
+                                            0xFFB2FFE2)
+                                    );
+                                  },
+                                ),
                               );
-                            },
-                          );
-                        }
-                        return Skeletonizer(
-                          enabled: true,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 10,
-                            itemBuilder: (context, index) {
-                              return JobTiles(
-                                  title: 'No Title',
-                                  company: 'No Location',
-                                  location: 'No Location',
-                                  salary: '10,000',
-                                  imageUrl: "https://miro.medium.com/v2/resize:fit:800/1*eYPD6Nie7QROiA6n0uPSTQ.png",
-                                  bookmarked: false,
-                                  jobType: "Remote",
-                                  color: Theme.of(context).colorScheme.background == Colors.black ? Color(0xFF36454F) : Color(
-                                  0xFFB2FFE2)
-                              );
-                            },
-                          ),
-                        );
-                      }
-                  )
+                            }
+                        )
+                    );
+                  }
                 ),
               ],
-            ));
-          }
-        ),
+            )),
       ),
 
     );

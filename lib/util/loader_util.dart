@@ -10,7 +10,7 @@ class LoaderUtil{
     EasyLoading.show(
       status: message,
       indicator: SpinKitWave(color: Theme.of(context).primaryColor),
-      maskType: EasyLoadingMaskType.black,
+      maskType: Theme.of(context).brightness == Brightness.dark ? EasyLoadingMaskType.black : EasyLoadingMaskType.clear,
     );
   }
 
