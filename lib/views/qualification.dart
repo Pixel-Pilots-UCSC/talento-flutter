@@ -2,7 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:talento/widgets/form_field.dart' as custom;
 
 class Qualification extends StatelessWidget {
-  const Qualification({super.key});
+  final String userId;
+  // const Qualification({super.key});
+  Qualification({required this.userId});
+
+  final TextEditingController qulificationController = TextEditingController();
+  final TextEditingController sDateController = TextEditingController();
+  final TextEditingController desController = TextEditingController();
+
+  // final AboutBloc _aboutBloc = AboutBloc();
+
+  // _saveData() async {
+  //   _aboutBloc.savedata(
+  //       fnameController.text, dobController.text, emailController.text);
+  // }
+
+  // final TextEditingController _links = TextEditingController();
+
+  // _addAboutme(BuildContext context) {
+  //   _aboutBloc.savedata(
+  //     fnameController.text,
+  //     emailController.text,
+  //     dobController.text,
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +88,7 @@ class Qualification extends StatelessWidget {
                         );
                       }),
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.green),
+                          MaterialStateProperty.all<Color>(Color(0xFF3EB489)),
                     ),
                     onPressed: () {},
                     child: const Center(

@@ -33,8 +33,8 @@ class MyApp extends StatelessWidget {
       darkTheme: Themes.darkTheme,
       builder: EasyLoading.init(),
       routes: {
-        // '/': (context) => LoginPage(),
-        '/' : (context) => SignupPage(),
+        '/': (context) => LoginPage(),
+        // '/' : (context) => SignupPage(),
         '/job-applicant' : (context) => MainLayout(),
         '/profile': (context) => ProfilePage(),
         '/job': (context) => EmployerDashboard(),

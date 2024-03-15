@@ -151,77 +151,95 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
+                    
                     width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        const SizedBox(height: 20),
-                        ProfileList(
-                          title: 'About me',
-                          bgColor: Colors.blue,
-                          iconColor: Color(0xFF3EB489),
-                          icon: Icons.person_outline,
-                          onTap: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (_) {
-                              return AboutMe();
-                            }));
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        ProfileList(
-                          title: 'work experience',
-                          bgColor: Colors.red,
-                          iconColor: Color(0xFF3EB489),
-                          icon: Icons.shopping_bag_outlined,
-                          onTap: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (_) {
-                              return WorkEx();
-                            }));
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        ProfileList(
-                          title: 'Education',
-                          bgColor: Colors.orange,
-                          iconColor: Color(0xFF3EB489),
-                          icon: Icons.school_outlined,
-                          onTap: () {
-                            // Navigator.of(context)
-                            //     .push(MaterialPageRoute(builder: (_) {
-                            //   return Education();
-                            // }));
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        ProfileList(
-                          title: 'Skill',
-                          bgColor: Colors.purple,
-                          iconColor: Color(0xFF3EB489),
-                          icon: Icons.grade_outlined,
-                          onTap: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (_) {
-                              return Skills();
-                            }));
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        ProfileList(
-                          title: 'Qualifications',
-                          bgColor: Colors.grey,
-                          iconColor: Color(0xFF3EB489),
-                          icon: Icons.verified_user_outlined,
-                          onTap: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (_) {
-                              return Qualification();
-                            }));
-                          },
-                        ),
-                      ],
-                    ),
+                    child: FutureBuilder(
+                      future: getProfileData(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasData) {
+                          UserModel user = snapshot.data;
+                          return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const SizedBox(height: 20),
+                          ProfileList(
+                            title: 'About me',
+                            bgColor: Colors.blue,
+                            iconColor: Color(0xFF3EB489),
+                            icon: Icons.person_outline,
+                            onTap: () {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (_) {
+                                return AboutMe(userId: user.data!.sId!);
+                              }));
+                              // ignore: unnecessary_brace_in_string_interps
+                              print("id:${user.data!.sId!}");
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          ProfileList(
+                            title: 'work experience',
+                            bgColor: Colors.red,
+                            iconColor: Color(0xFF3EB489),
+                            icon: Icons.shopping_bag_outlined,
+                            onTap: () {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (_) {
+                                return WorkEx();
+                              }));
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          ProfileList(
+                            title: 'Education',
+                            bgColor: Colors.orange,
+                            iconColor: Color(0xFF3EB489),
+                            icon: Icons.school_outlined,
+                            onTap: () {
+                              // Navigator.of(context)
+                              //     .push(MaterialPageRoute(builder: (_) {
+                              //   return Education();
+                              // }));
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          ProfileList(
+                            title: 'Skill',
+                            bgColor: Colors.purple,
+                            iconColor: Color(0xFF3EB489),
+                            icon: Icons.grade_outlined,
+                            onTap: () {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (_) {
+                                return Skills();
+                              }));
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          ProfileList(
+                            title: 'Qualifications',
+                            bgColor: Colors.grey,
+                            iconColor: Color(0xFF3EB489),
+                            icon: Icons.verified_user_outlined,
+                            onTap: () {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (_) {
+                                  return Qualification(userId: user.data!.sId ?? '');
+                              }));
+                              print("id:${user.data!.sId!}");
+                            },
+                          ),
+                        ],
+                        
+                      );
+                        
+                        }
+                      else {
+                          return CircularProgressIndicator();
+                        }
+                      },
+                      )
+
                   ),
                 ],
               ),
